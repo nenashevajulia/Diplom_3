@@ -1,4 +1,3 @@
-import configs.BrowserType;
 import configs.Urls;
 import configs.WebDriverFactory;
 import io.qameta.allure.junit4.DisplayName;
@@ -8,9 +7,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import pageObject.LoginPage;
-import pageObject.MainPage;
-import pageObject.UserPage;
+import pageobject.LoginPage;
+import pageobject.MainPage;
+import pageobject.UserPage;
 import user.User;
 import user.UserResponse;
 
@@ -24,7 +23,8 @@ public class ActionsUserTest {
 
     @Before
     public void setUp() {
-        driver = WebDriverFactory.getDriver(BrowserType.YANDEX);
+        String browserName = System.getProperty("browserName");
+        driver = WebDriverFactory.getDriver(browserName);
         user = new User(EMAIL, PASSWORD, NAME);
         userResponse = new UserResponse();
         Urls.start();

@@ -1,14 +1,17 @@
-import configs.BrowserType;
+import configs.Urls;
 import configs.WebDriverFactory;
 import io.qameta.allure.junit4.DisplayName;
+import io.restassured.response.ValidatableResponse;
+import login.Login;
+import login.LoginResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import pageObject.LoginPage;
-import pageObject.MainPage;
-import pageObject.RegistrationPage;
+import pageobject.LoginPage;
+import pageobject.MainPage;
+import pageobject.RegistrationPage;
 import user.User;
 import user.UserResponse;
 
@@ -19,12 +22,15 @@ import static user.UserData.*;
 public class RegistrationUserTest {
     public WebDriver driver;
     public UserResponse userResponse;
+    public LoginResponse loginResponse;
     public String accessToken;
     public User user;
 
     @Before
     public void setUp() {
-        driver = WebDriverFactory.getDriver(BrowserType.CHROME);
+        String browserName = System.getProperty("browserName");
+        driver = WebDriverFactory.getDriver(browserName);
+        userResponse = new UserResponse();
     }
 
     @Test
@@ -60,6 +66,11 @@ public class RegistrationUserTest {
 
     @After
     public void delete() {
+        loginResponse = new LoginResponse();
+        Login login = new Login(user.getEmail(), user.getPassword());
+        Urls.start();
+        ValidatableResponse responseLogin = loginResponse.login(login);
+        accessToken = responseLogin.extract().path("accessToken");
         if (accessToken != null) {
             userResponse.deleteUser(accessToken);
         }

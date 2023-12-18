@@ -7,14 +7,15 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.util.concurrent.TimeUnit;
 
 public class WebDriverFactory {
-    public static WebDriver getDriver(BrowserType browserType) throws RuntimeException {
-        switch (browserType) {
-            case CHROME:
+
+    public static WebDriver getDriver(String browserName) throws RuntimeException {
+        switch (browserName) {
+            case "chrome":
                 WebDriverManager.chromedriver().setup();
                 ChromeDriver chromeDriver = new ChromeDriver();
                 chromeDriver.manage().window().maximize();
                 return chromeDriver;
-            case YANDEX:
+            case "yandex":
                 System.setProperty("webdriver.chrome.driver", "src/main/resources/yandexdriver.exe");
                 ChromeDriver yandexDriver = new ChromeDriver();
                 yandexDriver.manage().window().maximize();
